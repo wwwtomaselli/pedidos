@@ -1,0 +1,12 @@
+github
+email: w_msg@yahoo.com.br
+conta: wwwtomaselli
+
+git init
+git add .
+git status
+git commit -m "mensagem"
+git remote add origin https://github.com/wwwtomaselli/pedidos.git
+git push -u origin master
+git log
+git pull
