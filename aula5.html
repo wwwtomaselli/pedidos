@@ -36,12 +36,16 @@
       }
       #aviso{
         color: red;
-	  }
-      .destaque {
+      }
+      .erro {
         color: red;
         font-style: italic;
-	  }
-	  
+      }
+      .erro input {
+        border: 1px solid red;
+        color: red;
+      }
+
     </style>
   </head>
   
@@ -50,16 +54,26 @@
     
     <fieldset id="formulario">
       <legend>Adicione um pedido</legend><br/>
-      <label id="lb_codigo">Código do produto:</label>
-      <input type="text" name="codigo" required /><br/><br/>
-      <label id="lb_nome">Nome do produto:</label>
-      <input type="text" name="nome" required /><br/><br/>
-      <label id="lb_quant">Quantidade:</label>
-      <input type="text" name="quant" required /><br/><br/>
-      <label id="lb_valor">Valor por unidade:</label>
-      <input type="text" name="valor" required /><br/><br/>
-      <label id="aviso"></label>
-      <button id="adicionar">Adicionar</button>
+      <div>
+        <label id="lb_codigo">Código do produto:</label>
+        <input type="text" name="codigo" required /><br/><br/>
+      </div>
+      <div>
+        <label id="lb_nome">Nome do produto:</label>
+        <input type="text" name="nome" required /><br/><br/>
+      </div>
+      <div>
+        <label id="lb_quant">Quantidade:</label>
+        <input id="input_quant" type="text" name="quant" required /><br/><br/>
+      </div>
+      <div>
+        <label id="lb_valor">Valor por unidade:</label>
+        <input id="input_valor" type="text" name="valor" required /><br/><br/>
+      </div>
+      <div>
+        <label id="aviso"></label>
+        <button id="adicionar">Adicionar</button>
+      </div>
     </fieldset>
     
     <table id="lista">

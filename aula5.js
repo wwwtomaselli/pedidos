@@ -28,25 +28,91 @@ function valor_total(fatura){
 
 var fatura = [];
 
+
 $(document).ready(function(){
+
+$('#input_quant').keydown(function(evento){
+  // console.log(evento.keyCode);
+  if((evento.keyCode >= 48 && evento.keyCode <= 57) || evento.keyCode == 08 || evento.keyCode == 46
+  || (evento.keyCode >= 37 && evento.keyCode <= 40) || (evento.keyCode >= 96 && evento.keyCode <= 105
+ || evento.keyCode == 09)
+  ){
+    return true;
+  } else {
+    return false;
+  } 
+});
+
+$('#input_valor').keydown(function(evento){
+  // console.log(evento.keyCode);
+  if((evento.keyCode >= 48 && evento.keyCode <= 57) || evento.keyCode == 08 || evento.keyCode == 46
+  || (evento.keyCode >= 37 && evento.keyCode <= 40) || (evento.keyCode >= 96 && evento.keyCode <= 105
+ || evento.keyCode == 09)
+  ){
+    var val = $('#input_valor').val();
+    var digitado = String.fromCharCode(evento.keyCode);
+    $('#input_valor').val(preco(val + digitado));
+    return true;
+  } else {
+    return false;
+  } 
+});
+
+
+
 $('#adicionar').click(function(){
-  var codigo = $('[name=codigo]').val();
+  var codigo = $('[name="codigo"]').val();
   var nome = $('[name="nome"]').val();
   var quant = $('[name="quant"]').val();
   var valor = $('[name="valor"]').val(); 
   
-  if(codigo =='') {
-    $('#lb_codigo').addClass("destaque");
+  var validado = true; //formulario inicialmente está validado
+  $('#formulario div.erro').removeClass();
+  $('#aviso').html("");
+  
+  $('#formulario input').each(function(indice,elemento){
+    if($(elemento).val() == ''){
+      $(elemento).parent().addClass("erro");
+      $('#aviso').html("Preenchimento obrigatório");
+      $(elemento).focus();
+      validado = false;
+    }    
+  });
+  
+  if(!validado) return;
+  
+  
+  
+  
+  
+/*  if(codigo =='') {
+    $('[name="codigo"]').parent().addClass("erro");
+    //$('#lb_codigo').addClass("erro");
     $('#aviso').html("Preenchimento obrigatório");
     $('[name="codigo"]').focus();
     return;
   };
   if(nome =='') {
-    $('#lb_nome').addClass("destaque");
+    $('[name="nome"]').parent().addClass("erro");
     $('#aviso').html("Preenchimento obrigatório");
     $('[name="nome"]').focus();
     return;
   };
+  if(quant =='') {
+    $('[name=quant]').parent().addClass("erro");
+    //$('#lb_codigo').addClass("erro");
+    $('#aviso').html("Preenchimento obrigatório");
+    $('[name="quant"]').focus();
+    return;
+  };
+  if(valor =='') {
+    $('[name="valor"]').parent().addClass("erro");
+    //$('#lb_codigo').addClass("erro");
+    $('#aviso').html("Preenchimento obrigatório");
+    $('[name="valor"]').focus();
+    return;
+  }; */
+  
   
   registro = [codigo, nome, parseInt(quant), parseFloat(valor)];
   fatura.push(registro);
@@ -62,4 +128,6 @@ $('#adicionar').click(function(){
   
   $('#lista tbody').append(registro_html);
   $('#totalpedido').html(preco(valor_total(fatura)));
-});});
+});
+  
+});
