@@ -26,13 +26,16 @@
         text-align: right;	
       }
       #formulario {
-        width: 400px;
+        width: 360px;
         font-weight: bold;
       }
       #formulario label {
         width: 180px;
         display: inline-block;
         font-weight: normal;
+      }
+      #formulario input, #formulario select {
+        width: 150px;
       }
       #aviso{
         color: red;
@@ -41,8 +44,8 @@
         color: red;
         font-style: italic;
       }
-      .erro input {
-        border: 1px solid red;
+      .erro input, .erro select {
+        border: 2px solid red;
         color: red;
       }
 
@@ -56,11 +59,13 @@
       <legend>Adicione um pedido</legend><br/>
       <div>
         <label id="lb_codigo">Código do produto:</label>
-        <input type="text" name="codigo" required /><br/><br/>
+        <input id="input_codigo" type="text" name="codigo" required /><br/><br/>
       </div>
       <div>
         <label id="lb_nome">Nome do produto:</label>
-        <input type="text" name="nome" required /><br/><br/>
+        <select id="input_nome" name="nome"/>
+          <option value="">-- Selecione --</option>
+        </select><br/><br/>
       </div>
       <div>
         <label id="lb_quant">Quantidade:</label>

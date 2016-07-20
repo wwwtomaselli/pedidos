@@ -1,0 +1,27 @@
+[
+{
+  "cod": 1234,
+  "nome": "Filtro de Óleo",
+  "preco": 34.89
+},
+{
+  "cod": 2134,
+  "nome": "Amortecedor",
+  "preco": 200.00
+},
+{
+  "cod": 4321,
+  "nome": "Roda 15",
+  "preco": 150.60
+},
+{
+  "cod": 3542,
+  "nome": "Coxim",
+  "preco": 48.95
+},
+{
+  "cod": 5489,
+  "nome": "Aro 15",
+  "preco": 125.00
+}
+]

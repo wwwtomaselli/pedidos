@@ -2,7 +2,8 @@ function preco(valor){
   //A função exibe um número positivo no formato R$ ##.###.###,##
   var formatado = "";
   //Separa a parte inteira da decimal:
-  var partes = valor.toFixed(2).toString().split('.');
+  var valor_decimal = parseFloat(valor).toFixed(2);
+  var partes = valor_decimal.toString().split('.');
   var tamanho = partes[0].length //tamanho da string da parte inteira
   var separador = ','; //separador decimal
   var i = 3; //contador para ler a string do fim para o começo
@@ -15,7 +16,8 @@ function preco(valor){
   if (i != 0){
     formatado = partes[0].substr(0,i) + separador + formatado;
   }
-  return 'R$\xa0' + formatado + partes[1];
+  formatado = 'R$\xa0' + formatado + partes[1]
+  return formatado;
 }
 
 function valor_total(fatura){
@@ -27,12 +29,47 @@ function valor_total(fatura){
 }
 
 var fatura = [];
+var produtos = [];
+
+function produto_nome(codigo) {
+  for(indice in produtos){
+    if((produtos[indice].cod).toString().search(codigo.toString()) == 0){
+      return produtos[indice];
+    }
+  }  
+}
 
 
 $(document).ready(function(){
 
+$.getJSON('produtos.json',function(data){
+  produtos = data;
+  $.each( data, function( chave, produto ){
+    $('#input_nome').append('<option value="'+ produto.cod +'">' + produto.nome + '</option>');
+  });
+});
+
+
+$('#input_nome').change(function(elemento){
+  $('[name="codigo"]').val($(this).val());
+});
+
+
+$('#input_codigo').keyup(function(evento){
+  if((evento.keyCode >= 48 && evento.keyCode <= 57) || evento.keyCode == 08 || evento.keyCode == 46
+  || (evento.keyCode >= 37 && evento.keyCode <= 40) || (evento.keyCode >= 96 && evento.keyCode <= 105
+ || evento.keyCode == 09)
+  ){
+    $('#input_nome').val(produto_nome($(this).val()).cod);
+    return true;
+  } else {
+    return false;
+  } 
+  
+});
+
+
 $('#input_quant').keydown(function(evento){
-  // console.log(evento.keyCode);
   if((evento.keyCode >= 48 && evento.keyCode <= 57) || evento.keyCode == 08 || evento.keyCode == 46
   || (evento.keyCode >= 37 && evento.keyCode <= 40) || (evento.keyCode >= 96 && evento.keyCode <= 105
  || evento.keyCode == 09)
@@ -43,14 +80,14 @@ $('#input_quant').keydown(function(evento){
   } 
 });
 
+
 $('#input_valor').keydown(function(evento){
-  // console.log(evento.keyCode);
-  if((evento.keyCode >= 48 && evento.keyCode <= 57) || evento.keyCode == 08 || evento.keyCode == 46
-  || (evento.keyCode >= 37 && evento.keyCode <= 40) || (evento.keyCode >= 96 && evento.keyCode <= 105
- || evento.keyCode == 09)
-  ){
-    var val = $('#input_valor').val();
+  evento.preventDefault();
+  //|| (evento.keyCode >= 96 && evento.keyCode <= 105)
+  if((evento.keyCode >= 48 && evento.keyCode <= 57)){
+    var val = $('#input_valor').data('valor') || '';
     var digitado = String.fromCharCode(evento.keyCode);
+    $('#input_valor').data('valor', val + digitado);
     $('#input_valor').val(preco(val + digitado));
     return true;
   } else {
@@ -64,13 +101,13 @@ $('#adicionar').click(function(){
   var codigo = $('[name="codigo"]').val();
   var nome = $('[name="nome"]').val();
   var quant = $('[name="quant"]').val();
-  var valor = $('[name="valor"]').val(); 
+  var valor = $('[name="valor"]').data('valor'); 
   
   var validado = true; //formulario inicialmente está validado
   $('#formulario div.erro').removeClass();
   $('#aviso').html("");
   
-  $('#formulario input').each(function(indice,elemento){
+  $('#formulario input, #formulario select').each(function(indice,elemento){
     if($(elemento).val() == ''){
       $(elemento).parent().addClass("erro");
       $('#aviso').html("Preenchimento obrigatório");
@@ -80,39 +117,6 @@ $('#adicionar').click(function(){
   });
   
   if(!validado) return;
-  
-  
-  
-  
-  
-/*  if(codigo =='') {
-    $('[name="codigo"]').parent().addClass("erro");
-    //$('#lb_codigo').addClass("erro");
-    $('#aviso').html("Preenchimento obrigatório");
-    $('[name="codigo"]').focus();
-    return;
-  };
-  if(nome =='') {
-    $('[name="nome"]').parent().addClass("erro");
-    $('#aviso').html("Preenchimento obrigatório");
-    $('[name="nome"]').focus();
-    return;
-  };
-  if(quant =='') {
-    $('[name=quant]').parent().addClass("erro");
-    //$('#lb_codigo').addClass("erro");
-    $('#aviso').html("Preenchimento obrigatório");
-    $('[name="quant"]').focus();
-    return;
-  };
-  if(valor =='') {
-    $('[name="valor"]').parent().addClass("erro");
-    //$('#lb_codigo').addClass("erro");
-    $('#aviso').html("Preenchimento obrigatório");
-    $('[name="valor"]').focus();
-    return;
-  }; */
-  
   
   registro = [codigo, nome, parseInt(quant), parseFloat(valor)];
   fatura.push(registro);
@@ -129,5 +133,6 @@ $('#adicionar').click(function(){
   $('#lista tbody').append(registro_html);
   $('#totalpedido').html(preco(valor_total(fatura)));
 });
-  
+
+
 });
